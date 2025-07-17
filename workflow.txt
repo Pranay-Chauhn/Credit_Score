@@ -1,0 +1,13 @@
+[Raw JSON File]
+     ↓
+[Preprocessing]
+     ↓
+[Feature Engineering]
+     ↓
+[Model Training]  (on labeled data or synthetic logic)
+     ↓
+[Score Wallets (0–1000)]
+     ↓
+[Output: scores.csv]
+     ↓
+[README.md + analysis.md]

@@ -1,0 +1,89 @@
+✅ Step 1: Load & Explore JSON (30 min)
+Load user_transactions.json (may need json.load or pandas.read_json)
+
+Group by wallet address
+
+Print sample transactions for 2–3 wallets
+
+Goal: Understand the actions (deposit, borrow, etc.), amounts, timestamps
+
+✅ Step 2: Feature Engineering (45 min)
+In features.py, engineer meaningful features per wallet:
+
+Feature Name	Description
+total_deposits	Total number of deposit actions
+total_borrows	Total borrow actions
+avg_repay_time	Time taken between borrow and repay
+deposit_to_borrow_ratio	Ratio of deposits to borrows
+is_liquidated	Whether the wallet was liquidated
+txn_frequency	Transactions per day
+unique_actions	Count of different action types
+time_active_days	Days between first & last transaction
+
+→ Output: wallet_features.csv
+
+✅ Step 3: Model Building (45 min)
+In model.py:
+
+If no label is given (unsupervised):
+
+Use KMeans, Isolation Forest, or custom rule-based score logic
+
+Normalize features
+
+Create a function to map scores to 0–1000 scale
+
+python
+Copy
+Edit
+score = 1000 * (1 - risk_score)
+✅ Step 4: Scoring Script (30 min)
+In score_wallets.py:
+
+Load the JSON
+
+Run the pipeline: preprocess → feature engineering → score
+
+Save results to output/scores.csv
+
+bash
+Copy
+Edit
+python score_wallets.py data/user_transactions.json
+✅ Step 5: Create analysis.md (30 min)
+Use matplotlib or seaborn to plot:
+
+Score distribution histogram (0–100, ..., 900–1000)
+
+Describe:
+
+Risky behavior in 0–300 scores
+
+Healthy behavior in 700–1000 scores
+
+✅ Step 6: Write README.md (30 min)
+Include:
+
+✅ Problem statement
+
+✅ Feature list & logic
+
+✅ Modeling approach (e.g. unsupervised/rule-based)
+
+✅ How to run script
+
+🔧 Example Command to Run
+bash
+Copy
+Edit
+python score_wallets.py data/user_transactions.json
+📦 requirements.txt
+txt
+Copy
+Edit
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+tqdm
