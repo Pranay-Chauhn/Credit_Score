@@ -12,7 +12,6 @@ venv/
 .ipynb_checkpoints/
 
 # Output files
-output/
 *.csv
 *.json
 
