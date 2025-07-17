@@ -5,16 +5,13 @@ This project implements a rule-based scoring pipeline to evaluate DeFi wallet be
 ## Project Structure
 
 app/
-│
 ├── output/ # Stores outputs
 │ ├── wallet_features.csv # Extracted features per wallet
 │ └── wallet_scores.csv # Final wallet scores
-│
 ├── src/
 │ ├── features.py # Feature engineering logic
 │ ├── load.py # Data loading/saving utils
 │ └── scoring.py # Rule-based scoring logic
-│
 └── main.py # Optional pipeline runner (future)
 
 
@@ -53,14 +50,12 @@ pip install -r requirements.txt
 2. Place your JSON data from Aave in the appropriate directory.
 3. In main.py, enter the path in main function at line 34.
 4. In terminal run :
-    python -m app.main
-
-
-
-4. Review outputs:
-   - `app/output/wallet_features.csv`
-   - `app/output/wallet_scores.csv`
-
+    - python -m app.main
+5. Review outputs:
+    - `app/output/wallet_features.csv`
+    - `app/output/wallet_scores.csv`
+6. Run analyze.py 
+    - to get analysis 
 ## Applications
 
 - DeFi wallet segmentation
