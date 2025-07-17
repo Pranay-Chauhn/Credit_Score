@@ -8,7 +8,7 @@ This document summarizes the results of the wallet scoring system after processi
 
 Below is the distribution of wallet scores across 10 buckets:
 
-![Score Distribution](app\output\score_distribution.png)
+![Score Distribution](app/output/score_distribution.png)
 
 | Score Range | Description |
 |-------------|-------------|
