@@ -48,9 +48,9 @@ def generate_wallet_features(df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     # Load and process
-    file_path = "app\\data\\user-wallet-transactions.json"
-    output_dir = "app\\output"
-    output_path = os.path.join(output_dir,"wallet_features.csv")
+    file_path = "D:\\Projects\\aave_credit_score\\app\\data\\detailed_wallet_data.json"
+    output_dir = "app\\data"
+    output_path = os.path.join(output_dir,"test_wallet.csv")
 
     df = load_data(file_path)
     df = preprocess(df)
@@ -60,4 +60,4 @@ if __name__ == "__main__":
 
     # Save output
     wallet_features.to_csv(output_path, index=False)
-    print("✅ Feature engineering completed. Output saved to output/wallet_features.csv")
+    print("✅ Feature engineering completed. Output saved to data/wallet_features.csv")

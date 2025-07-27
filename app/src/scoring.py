@@ -1,4 +1,5 @@
 import pandas as pd
+import joblib
 
 def score_wallet(row):
     score = 500  # Base score out of 1000
@@ -45,13 +46,17 @@ def score_wallet(row):
     score = max(0, min(1000, score))  # Ensure within 0 to 1000
     return score
 
+# Scoring using Self-Suopervised Tech 
 
-if __name__ == "__main__":
-    input_path = "app/output/wallet_features.csv"
-    output_path = "app/output/wallet_scores.csv"
+# Load saved model
+model = joblib.load(r"D:\Projects\aave_credit_score\app\models\credit_score_model.pkl")
 
-    df = pd.read_csv(input_path)
-    df['score'] = df.apply(score_wallet, axis=1)
+def assign_credit_score(wallet_features_df):
+    # Predict risk label
+    risk_probs = model.predict_proba(wallet_features_df)[:, 1]
 
-    df.to_csv(output_path, index=False)
-    print(f"✅ Wallet scoring completed. Output saved to: {output_path}")
+    # Score out of 1000
+    scores = (1 - risk_probs) * 1000
+    scores = scores.round().astype(int)
+
+    return scores

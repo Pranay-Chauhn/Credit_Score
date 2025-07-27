@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 
-file_path = "app\\data\\user-wallet-transactions.json"
+file_path = "D:\\Projects\\aave_credit_score\\app\\data\\detailed_wallet_data.json"
 
 
 #Path to your json file

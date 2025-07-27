@@ -1,34 +1,49 @@
-# app/main.py
-import os
-from app.src.features import load_data, preprocess, generate_wallet_features
-from app.src.scoring import score_wallet
 import pandas as pd
+from app.src.scoring import score_wallet, assign_credit_score
+import os
 
-def main(file_path = "app\\data\\user-wallet-transactions.json"):
-    # Path
-    file_path = file_path
-    output_dir = "app\\output"
-    os.makedirs(output_dir, exist_ok=True)
-    data_output_path = os.path.join(output_dir,"wallet_features.csv")
+# ----------- File Paths -----------
+WALLET_FEATURES_PATH = "app/data/wallet_features.csv"
+INPUT_WALLETS_PATH = "D:/Projects/aave_credit_score/app/test/test.csv"
+OUTPUT_PATH = "output/final_wallet_scores.csv"
 
-    # Step 1: Load + preprocess
-    df = load_data(file_path)
-    df = preprocess(df)
+# ----------- Ensure Output Directory -----------
+os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
 
-    # Step 2: Feature engineering
-    wallet_features = generate_wallet_features(df)
+def main():
+    # Load all wallet features
+    try:
+        features_df = pd.read_csv(WALLET_FEATURES_PATH)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"❌ Features file not found at {WALLET_FEATURES_PATH}")
+
+    # Load list of wallet addresses to score
+    try:
+        wallets_to_score = pd.read_csv(INPUT_WALLETS_PATH)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"❌ Input file not found at {INPUT_WALLETS_PATH}")
     
-    # Save output
-    wallet_features.to_csv(data_output_path, index=False)
-    print("✅ Feature engineering completed. Output saved to output/wallet_features.csv")
+    if 'wallet_id' not in wallets_to_score.columns:
+        raise ValueError("❌ Input CSV must contain 'wallet_address' column.")
 
-    # Step 3: Scoring
-    wallet_features['score'] = wallet_features.apply(score_wallet, axis=1)
+    # Filter features for input wallets
+    filtered_df = features_df[features_df['userWallet'].isin(wallets_to_score['wallet_id'])].copy()
+    
+    if filtered_df.empty:
+        raise ValueError("❌ None of the provided wallet addresses were found in the features file.")
 
-    # Step 4: Save results
-    score_output_path = os.path.join(output_dir,"final_wallet_scores.csv")
-    wallet_features.to_csv(score_output_path, index=False)
-    print(f"✅ All done. Output saved at {score_output_path}")
+    # Apply rule-based scoring
+    filtered_df['rule_score'] = filtered_df.apply(score_wallet, axis=1)
+
+    # Apply model-based (self-supervised) credit scoring
+    credit_scores = assign_credit_score(filtered_df.drop(columns=['userWallet']))
+    filtered_df['model_score'] = credit_scores['credit_score']
+
+    # Final output
+    result_df = filtered_df[['userWallet', 'rule_score', 'model_score']]
+    result_df.to_csv(OUTPUT_PATH, index=False)
+
+    print(f"✅ Scoring completed successfully. Results saved to: {OUTPUT_PATH}")
 
 if __name__ == "__main__":
-    main() # enter the path of your json data here eg: main("app\\test.json").
+    main()
