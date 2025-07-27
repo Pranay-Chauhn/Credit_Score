@@ -7,7 +7,7 @@ from datetime import datetime
 from bson import ObjectId  # This requires `pip install bson`
 
 # Covalent API key
-API_KEY = "cqt_rQmb3ttVBTbfD8FP7pDbGqF6VVyP"
+API_KEY = "SECRET_KEY"
 CHAIN_ID = "1"  # Ethereum Mainnet
 
 wallet_addresses=[
